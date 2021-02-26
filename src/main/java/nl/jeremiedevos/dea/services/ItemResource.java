@@ -71,7 +71,12 @@ public class ItemResource {
     @DELETE
     @Path("/{itemId}")
     public Response deleteItem(@PathParam("itemId") Integer itemId){
-        itemService.deleteItem(itemId);
+
+        try{
+            itemService.deleteItem(itemId);
+        }catch(ItemNotAvailableException e){
+            return Response.status(404).build();
+        }
         return Response.ok().build();
     }
 }
