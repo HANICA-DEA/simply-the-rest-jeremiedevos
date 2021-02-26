@@ -46,8 +46,8 @@ public class ItemResource {
         ItemDTO item;
         try {
             item = itemService.getItem(id);
-        }catch (IdAlreadyInUseException e){
-            return Response.status(409).build();
+        }catch (ItemNotAvailableException e){
+            return Response.status(404).build();
         }
 
         return Response.ok(item).build();
@@ -60,8 +60,8 @@ public class ItemResource {
 
         try {
             itemService.addItem(itemDTO);
-        }catch (ItemNotAvailableException e){
-            return Response.status(404).build();
+        }catch (IdAlreadyInUseException e){
+            return Response.status(409).build();
         }
 
         final URI itemDTOIdUri = UriBuilder.fromResource(ItemResource.class).path("items/{id}").build(itemDTO.getId());
