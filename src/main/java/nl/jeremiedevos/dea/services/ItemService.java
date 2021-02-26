@@ -40,7 +40,7 @@ public class ItemService {
      * @param itemDTO The {@link ItemDTO} to be added
      * @throws IdAlreadyInUseException Thrown if the Id is not unique
      */
-    public void addItem(ItemDTO itemDTO) throws IdAlreadyInUseException{
+    public void addItem(ItemDTO itemDTO) throws IdAlreadyInUseException {
         if (items.stream().anyMatch(item -> item.getId() == itemDTO.getId())) {
             throw new IdAlreadyInUseException();
         }
@@ -54,7 +54,7 @@ public class ItemService {
      * @param id The Id of the {@link ItemDTO} to be returned
      * @throws ItemNotAvailableException Thrown if there is no {@link ItemDTO} for the given Id
      */
-    public ItemDTO getItem(int id) throws ItemNotAvailableException{
+    public ItemDTO getItem(int id) throws ItemNotAvailableException {
         Optional<ItemDTO> requestedItem = items.stream().filter(item -> item.getId() == id).findFirst();
 
         if (requestedItem.isPresent()) {
@@ -69,10 +69,10 @@ public class ItemService {
      *
      * @throws ItemNotAvailableException Thrown if there is no {@link ItemDTO} for the given Id
      */
-    public void deleteItem(int id) throws ItemNotAvailableException{
+    public void deleteItem(int id) throws ItemNotAvailableException {
         Optional<ItemDTO> itemForName = items.stream().filter(item -> item.getId() == id).findFirst();
 
-        if(itemForName == null)
+        if (itemForName == null)
             throw new ItemNotAvailableException();
 
         List<ItemDTO> filteredItems = items.stream().filter(item -> item.getId() != id).collect(Collectors.toList());

@@ -15,38 +15,42 @@ import java.net.URI;
 @Path("/items")
 public class ItemResource {
 
-    private ItemService itemService = new ItemService();
+    private final ItemService itemService;
+
+    public ItemResource() {
+        this.itemService = new ItemService();
+    }
 
     @GET
     @Path("/")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response getItemsASPlainText(){
+    public Response getItemsASPlainText() {
         return Response.ok("[\"bread\", \"butter\"]").build();
     }
 
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getItemsASJson(){
+    public Response getItemsASJson() {
         return Response.ok("[\"bread\", \"butter\"]").build();
     }
 
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllItemsAsJson(){
+    public Response getAllItemsAsJson() {
         return Response.ok(itemService.getAll()).build();
     }
 
     @GET
     @Path("/{itemId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getItemByIdAsJson(@PathParam("itemId") int id){
+    public Response getItemByIdAsJson(@PathParam("itemId") int id) {
 
         ItemDTO item;
         try {
             item = itemService.getItem(id);
-        }catch (ItemNotAvailableException e){
+        } catch (ItemNotAvailableException e) {
             return Response.status(404).build();
         }
 
@@ -56,11 +60,11 @@ public class ItemResource {
     @POST
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response postItemAsJson(ItemDTO itemDTO){
+    public Response postItemAsJson(ItemDTO itemDTO) {
 
         try {
             itemService.addItem(itemDTO);
-        }catch (IdAlreadyInUseException e){
+        } catch (IdAlreadyInUseException e) {
             return Response.status(409).build();
         }
 
@@ -70,11 +74,11 @@ public class ItemResource {
 
     @DELETE
     @Path("/{itemId}")
-    public Response deleteItem(@PathParam("itemId") Integer itemId){
+    public Response deleteItem(@PathParam("itemId") Integer itemId) {
 
-        try{
+        try {
             itemService.deleteItem(itemId);
-        }catch(ItemNotAvailableException e){
+        } catch (ItemNotAvailableException e) {
             return Response.status(404).build();
         }
         return Response.ok().build();
