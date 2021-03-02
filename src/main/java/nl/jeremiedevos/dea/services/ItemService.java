@@ -72,15 +72,10 @@ public class ItemService {
     public void deleteItem(int id) throws ItemNotAvailableException {
         Optional<ItemDTO> itemForName = items.stream().filter(item -> item.getId() == id).findFirst();
 
-        if (itemForName == null)
-            throw new ItemNotAvailableException();
-
-        List<ItemDTO> filteredItems = items.stream().filter(item -> item.getId() != id).collect(Collectors.toList());
-
-        if (filteredItems.size() == items.size()) {
+        if(!itemForName.isPresent()){
             throw new ItemNotAvailableException();
         }
 
-        items = filteredItems;
+        items.remove(itemForName.get());
     }
 }
